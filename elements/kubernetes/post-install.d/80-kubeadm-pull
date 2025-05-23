@@ -8,6 +8,8 @@ fi
 set -eu
 set -o pipefail
 
+df -h
+
 # start containerd temporarily, and run pull (but we need to start it as a binary because systemd is not running)
 containerd --config /etc/containerd/config.toml &
 
@@ -17,7 +19,7 @@ while [ ! -S /run/containerd/containerd.sock ]; do
 done
 
 # Pull all images
-kubeadm config images pull --kubernetes-version=${DIB_KUBERNETES_VERSION}
+kubeadm --v=5 config images pull --kubernetes-version=${DIB_KUBERNETES_VERSION}
 
 # Stop containerd
 # TODO(mnaser): Make sure it's the one we spawned?
